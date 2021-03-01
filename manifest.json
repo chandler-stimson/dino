@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "version": "0.1.0",
+  "name": "Dino - The Dinosaur Game",
+  "description": "Google's T-Rex Game and Dino Runner game; avoid obstacles, including cacti and pterodactyls by pressing the up and down keys",
+  "permissions": [
+    "storage"
+  ],
+  "icons": {
+     "16": "data/icons/16.png",
+     "32": "data/icons/32.png",
+     "48": "data/icons/48.png",
+     "64": "data/icons/64.png",
+     "128": "data/icons/128.png",
+     "256": "data/icons/256.png",
+     "512": "data/icons/512.png"
+  },
+  "action": {
+    "default_popup": "data/popup/index.html"
+  },
+  "background": {
+    "service_worker": "worker.js"
+  },
+  "sandbox": {
+    "pages": ["data/popup/index.html"]
+  }
+}
