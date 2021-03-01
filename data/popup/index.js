@@ -1,3 +1,9 @@
+if (typeof webapp !== 'undefined') {
+  document.body.style.width = 'unset';
+  document.body.style.height = '100vh';
+  document.body.style.margin = 'auto';
+}
+
 fetch('dino.wasm').then(response => response.arrayBuffer()).then(bytes => WebAssembly.instantiate(bytes, {Math})).then(({instance}) => {
   const canvasData = new Uint8Array(instance.exports.mem.buffer, 0x5000, 90000);
   const canvas = document.querySelector('canvas');
@@ -5,7 +11,6 @@ fetch('dino.wasm').then(response => response.arrayBuffer()).then(bytes => WebAss
   const imageData = context.createImageData(300, 75);
   const u8 = new Uint8Array(instance.exports.mem.buffer, 0, 4);
   const onkey = (down, event) => {
-    console.log(event.code);
     let bit;
     switch (event.code) {
     case 'ArrowUp': bit = 1; break;
