@@ -20,6 +20,8 @@ fetch('dino.wasm').then(response => response.arrayBuffer()).then(bytes => WebAss
     else {
       u8[0] &= ~bit;
     }
+    event.preventDefault();
+    event.stopPropagation();
   };
   document.addEventListener('keydown', onkey.bind(null, 1), false);
   document.addEventListener('keyup', onkey.bind(null, 0), false);
@@ -44,6 +46,7 @@ fetch('dino.wasm').then(response => response.arrayBuffer()).then(bytes => WebAss
       }
     }
     event.preventDefault();
+    event.stopPropagation();
   };
   canvas.addEventListener('touchstart', ontouch.bind(null, 1), false);
   canvas.addEventListener('touchend', ontouch.bind(null, 0), false);
@@ -55,4 +58,5 @@ fetch('dino.wasm').then(response => response.arrayBuffer()).then(bytes => WebAss
     requestAnimationFrame(update);
   };
   update();
+  window.focus();
 });
