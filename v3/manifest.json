@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
-  "version": "0.1.1",
-  "name": "Dino - The Dinosaur Game",
+  "version": "0.1.3",
+  "name": "Dino",
   "description": "__MSG_description__",
   "default_locale": "en",
   "offline_enabled": true,
   "permissions": [
-    "storage"
+    "storage",
+    "contextMenus"
   ],
   "homepage_url": "https://add0n.com/dino.html",
   "icons": {
@@ -25,6 +26,11 @@
     "service_worker": "worker.js"
   },
   "sandbox": {
-    "pages": ["data/popup/index.html"]
+    "pages": ["data/popup/game/index.html"]
+  },
+  "commands": {
+    "_execute_action": {
+      "description": "Press the action button"
+    }
   }
 }

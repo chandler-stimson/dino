@@ -1,3 +1,8 @@
+const args = new URLSearchParams(location.search);
+document.body.dataset.mode = args.get('mode');
+
+let speed = 1;
+
 fetch('dino.wasm').then(response => response.arrayBuffer()).then(bytes => WebAssembly.instantiate(bytes, {Math})).then(({instance}) => {
   const canvasData = new Uint8Array(instance.exports.mem.buffer, 0x5000, 90000);
   const canvas = document.querySelector('canvas');
@@ -7,6 +12,27 @@ fetch('dino.wasm').then(response => response.arrayBuffer()).then(bytes => WebAss
   const onkey = (down, event) => {
     let bit;
     switch (event.code) {
+    case 'Digit1':
+    case 'Numpad1':
+      document.body.dataset.speed = speed = 1;
+      return;
+    case 'Digit2':
+    case 'Numpad2':
+      document.body.dataset.speed = speed = 2;
+      return;
+    case 'Digit3':
+    case 'Numpad3':
+      document.body.dataset.speed = speed = 3;
+      return;
+    case 'KeyP':
+      if (event.type === 'keydown') {
+        paused = !paused;
+        document.body.dataset.paused = paused;
+        if (paused === false) {
+          update();
+        }
+      }
+      return;
     case 'ArrowUp': bit = 1; break;
     case 'KeyW': bit = 1; break;
     case 'Space': bit = 1; break;
@@ -51,12 +77,38 @@ fetch('dino.wasm').then(response => response.arrayBuffer()).then(bytes => WebAss
   canvas.addEventListener('touchstart', ontouch.bind(null, 1), false);
   canvas.addEventListener('touchend', ontouch.bind(null, 0), false);
 
+  let paused = false;
   const update = () => {
+    if (paused) {
+      return;
+    }
     instance.exports.run();
     imageData.data.set(canvasData);
     context.putImageData(imageData, 0, 0);
-    requestAnimationFrame(update);
+    console.log(speed);
+    if (speed === 1) {
+      requestAnimationFrame(update);
+    }
+    else if (speed === 2) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(update);
+      });
+    }
+    else if (speed === 3) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(update);
+        });
+      });
+    }
   };
   update();
   window.focus();
 });
+
+document.getElementById('expand').onclick = () => {
+  const a = document.createElement('a');
+  a.href = '?mode=window';
+  a.target = '_blank';
+  a.click();
+};
